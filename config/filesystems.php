@@ -37,6 +37,12 @@ return [
             'throw' => false,
         ],
 
+        //array private dowenlod file
+        'public_uploads_file'=>[
+            'driver'=>'local',
+            'root'=>public_path().'/attachments',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
