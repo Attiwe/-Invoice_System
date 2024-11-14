@@ -13,8 +13,7 @@ use Hash;
 
 class UserController extends Controller
 {
-    // عرض قائمة المستخدمين
-    public function index(Request $request)
+     public function index(Request $request)
     {
         $data = User::orderBy('id', 'DESC')->paginate(5);
         return view('users.show_users', compact('data'))
@@ -62,35 +61,7 @@ class UserController extends Controller
         return view('users.edit', compact('user', 'roles', 'userRole'));
     }
 
-    //  public function update(Request $request, $id)
-    // {
-    //     $request->validate([
-    //         'name' => 'required',
-    //         'email' => 'required|email|unique:users,email,' . $id,
-    //         'password' => 'same:confirm-password',
-    //         'role_name' => 'required',
-    //     ]);
-
-    //     $input = $request->all();
-        
-    //     if (!empty($input['password'])) {
-    //         $input['password'] = Hash::make($input['password']);
-    //     } else {
-    //         unset($input['password']);
-    //     }
-
-    //     $user = User::find($id);
-    //     $user->update($input);
-        
-    //     DB::table('model_has_roles')->where('model_id', $id)->delete();
-    //     $user->assignRole($request->input('roles'));
-
-    //     return redirect()->route('users.index');
-    // }
-    // use Illuminate\Support\Arr;
-    // use Illuminate\Support\Facades\Hash;
-    // use App\Models\User;
-    // use DB;
+    
     
     public function update(Request $request, $id)
     {
@@ -106,18 +77,15 @@ class UserController extends Controller
         if (!empty($input['password'])) {
             $input['password'] = Hash::make($input['password']);
         } else {
-            // استبدال array_except بـ Arr::except
-            $input = Arr::except($input, ['password']);
+             $input = Arr::except($input, ['password']);
         }
     
         $user = User::find($id);
         $user->update($input);
     
-        // حذف الأدوار القديمة
-        DB::table('model_has_roles')->where('model_id', $id)->delete();
+         DB::table('model_has_roles')->where('model_id', $id)->delete();
     
-        // تعيين الأدوار الجديدة
-        $user->assignRole($request->input('roles'));
+         $user->assignRole($request->input('roles'));
     
         return redirect()->route('users.index')
             ->with('success', 'تم تحديث معلومات المستخدم بنجاح');
