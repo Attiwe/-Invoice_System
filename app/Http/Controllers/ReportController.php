@@ -26,21 +26,19 @@ class ReportController extends Controller
 
     try {
          if ($rdio == 1) {
-            // في حالة تحديد  الكل
-            if($request->type=='الكل' ){
+             if($request->type=='الكل' ){
                   $invioce = Invoice::query()->with('section')->get();
                   $type = $request->type;
                    return view('report.invoice_report',compact('invioce','type') );
     
             }
-             // في حالة عدم تحديد التواريخ
-            if ($request->type && $request->start_at == '' && $request->end_at == '') {
+             if ($request->type && $request->start_at == '' && $request->end_at == '') {
                 $invioce = Invoice::query()->where('status', $request->type)->get();
                 $type = $request->type;
                  return view('report.invoice_report', compact('type', 'invioce'));
             } 
  
-            else { // في حالة تحديد التواريخ
+            else { 
                 $start_at = Carbon::parse($request->start_at)->startOfDay();
                 $end_at = Carbon::parse($request->end_at)->endOfDay(); 
                 $type = $request->type;
@@ -50,7 +48,7 @@ class ReportController extends Controller
                     ->get();
                  return view('report.invoice_report', compact('start_at', 'end_at', 'type', 'invioce'));
             }
-        } else { // في حالة تحديد رقم الفاتورة
+        } else {   
             $invioce = Invoice::query()->where('invoice_number', $request->invoice_number)->get();
             if (!isset($invioce)) {
                 return redirect()->back()->withErrors(['error' => 'الفاتورة التي تبحث عنها غير موجودة']);
